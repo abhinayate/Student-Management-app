@@ -35,6 +35,13 @@ JavaScript. Before diving into them, it will pay off to first get comfortable wi
 JavaScript building blocks — variables, functions, arrays, objects, if/else, loops. That's
 "Phase 0" in the roadmap below, and it's the foundation everything else sits on.
 
+**Security note:** `npm audit` flags one high-severity advisory on the installed
+`react-router-dom` version. It applies only to "RSC mode" (React Server Components /
+server actions) — a feature this plain client-side app does not use. Downgrading to
+the "fixed" version actually reintroduces several older, more relevant
+vulnerabilities, so we deliberately kept the newer version and are not using RSC
+mode. Revisit if this app ever adopts React Router's server-rendering features.
+
 ## 3. How the Pieces Talk to Each Other
 
 ```
@@ -147,21 +154,33 @@ No database account/signup is needed this time — SQLite is just an npm package
   dedicated fundamentals phase and learn JavaScript concepts (variables, functions,
   arrays, objects, loops, etc.) inline, as they come up while building real features,
   rather than as a separate lesson block.
-- **Phase 1 — Backend setup.** Node + Express server running locally; create the
-  SQLite database file and define the `students` table.
-- **Phase 2 — Backend CRUD.** Build the API endpoints: create, read, update, delete,
-  search. Test them with Thunder Client — before any frontend exists.
-- **Phase 3 — Frontend skeleton.** Set up the React app with Vite, install Chakra UI
-  and React Router, build the empty pages/layout (Navbar, Students page, Add/Edit
-  form, Dashboard) with no real data yet.
-- **Phase 4 — Wire frontend to backend.** Students page shows real data from the
-  database; Add/Edit forms (built with React Hook Form) and Delete actually work.
-- **Phase 5 — Search, Filter, Sort.** Add the search box, filter dropdowns, and
-  sortable columns.
-- **Phase 6 — Dashboard & Charts.** Compute the stats, add Recharts, build the
-  dashboard page.
-- **Phase 7 — Responsive polish.** Test on different screen sizes, fix layout on
-  mobile/tablet, add loading and empty states, form validation messages.
+- **Phase 1 — Backend setup. (Done.)** Node + Express server running locally; created
+  the SQLite database file and the `students` table.
+- **Phase 2 — Backend CRUD. (Done.)** Built and tested (via curl) all API endpoints:
+  create, read, update, delete, search, filter, and sort — plus server-side
+  validation on every field.
+- **Phase 3 — Frontend skeleton. (Done.)** React app set up with Vite; installed
+  Chakra UI, React Router, React Hook Form, Recharts. Built Navbar + empty
+  pages/layout, verified the build compiles and the dev server serves the app.
+  (Note: installed **Chakra UI v3**, not v2 — its API is a bit different (e.g.
+  `NativeSelect`, `Table.Root`/`Dialog.Root` compound components) but is the
+  current stable version and works with React 19.)
+- **Phase 4 — Wire frontend to backend.** (Done.) Students page shows real data
+  from the database via a `services/api.js` helper; Add/Edit forms (React Hook
+  Form) and Delete (with a confirmation dialog) all call the real backend.
+- **Phase 5 — Search, Filter, Sort. (Done.)** Search box, Grade/Section/Gender
+  filter dropdowns, and click-to-sort table columns — built directly into the
+  Students page, backed by the same backend query support added in Phase 2.
+- **Phase 6 — Dashboard & Charts. (Done.)** Added a `/api/students/stats/summary`
+  backend endpoint; Dashboard page shows stat cards plus a gender pie chart and
+  grade/section/admissions-over-time bar charts (Recharts), using a
+  colorblind-checked color palette.
+- **Phase 7 — Responsive polish. (Done.)** Table becomes a card list on mobile,
+  filters stack vertically on small screens, dashboard charts go from a 2-column
+  to 1-column grid, navbar stacks on narrow screens. Loading states and error
+  messages are in place. *Not visually verified in an actual browser by the
+  assistant (no browser tool available) — please open the app yourself to confirm
+  it looks right on your end.*
 - **Phase 8 (optional, later) — Deployment.** Put the app on the internet (e.g.
   frontend on Vercel/Netlify, backend on Render/Railway) so it's reachable from
   anywhere, not just your own computer. *Note for later:* some hosting platforms
